@@ -3,7 +3,7 @@ tumblrimgdl.py
 
 Downloads images from a specific tumblr paged on a range of pages
 
-Usage: python tumblrimgdl.py http://example.com/ [start page defaults 1] [end page defaults 2] [output directory relative to path]
+Usage: python tumblrimgdl.py http://example.com [start page defaults 1] [end page defaults 2] [output directory relative to path]
 
 """
 
@@ -35,7 +35,7 @@ def main(url, out_folder, start_page, end_page):
 
 
 def _usage():
-    print "python tumblrimgdl.py http://example.com/ [start page defaults 0] [end page defaults 0] [output directory relative to path]"
+    print "python tumblrimgdl.py http://example.com [start page defaults 1] [end page defaults 2] [output directory relative to path]"
 
 if __name__ == "__main__":
     url = sys.argv[1]
