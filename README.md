@@ -11,6 +11,6 @@ Beautifulsoup4
 Usage
 ========
 
-python tumblrimgdl.py http://example.com [start page defaults 1] [end page defaults 2] [output directory relative to path]
+python tumblrimgdl.py [http://example.com] [output directory relative to path] [start page defaults 1] [end page defaults 2]
 
 This is set up to ignore various tracking files.

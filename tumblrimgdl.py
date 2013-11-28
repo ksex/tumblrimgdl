@@ -9,7 +9,6 @@ Usage: python tumblrimgdl.py http://example.com [start page defaults 1] [end pag
 
 from bs4 import BeautifulSoup as bs
 import urlparse
-import random
 from urllib2 import urlopen
 from urllib import urlretrieve
 import os
