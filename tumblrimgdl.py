@@ -3,7 +3,7 @@ tumblrimgdl.py
 
 Downloads images from a specific tumblr paged on a range of pages
 
-Usage: python tumblrimgdl.py http://example.com [start page defaults 1] [end page defaults 2] [output directory relative to path]
+Usage: python tumblrimgdl.py http://example.com [output directory relative to path] [start page defaults 1] [end page defaults 2] 
 
 """
 
@@ -13,43 +13,45 @@ from urllib2 import urlopen
 from urllib import urlretrieve
 import os
 import sys
+import argparse
 
-def main(url, out_folder, start_page, end_page):
-   
+class Tumblrimgdl(object):
+  def __init__(self):
+    parser = argparse.ArgumentParser(description='Download all images from a specific tumblr url.')
+    parser.add_argument('tumblr_url', metavar='u', type=str,
+               help='tumblr url (eg http://fake.tumblr.com)') 
+    parser.add_argument('output_folder', metavar='o', type=str,
+               help='source folder (relative to current path)')    
+    parser.add_argument('start_page', metavar='s', type=int,
+               help='Start page (defaults to 1)', default='1')
+    parser.add_argument('end_page', metavar='e', type=int,
+               help='End page (defaults to 2)', default='2')
+
+    self.args = parser.parse_args()
+    self.base_url = os.getcwd()
+
+  def dl_imgs(self):
+    self.parse_imgs(self.args.tumblr_url, self.args.output_folder, self.args.start_page, self.args.end_page)
+
+  def parse_imgs(self, tumblr_url, output_folder, start_page, end_page):
+     
     for x in range(start_page, end_page + 1):
-        url2 = url + '/page/' + str(x)
-        print url2
-        soup = bs(urlopen(url2))
-        parsed = list(urlparse.urlparse(url2))
+      url2 = tumblr_url + '/page/' + str(x)
+      soup = bs(urlopen(url2))
+      parsed = list(urlparse.urlparse(url2))
 
-        for image in soup.findAll("img"):
-            image_url = urlparse.urljoin(url, image['src'])
-            if not "impixu?" in image_url and not "quantserve" in image_url: 
-                print "Image: %(src)s" % image
+      for image in soup.findAll("img"):
+        image_url = urlparse.urljoin(tumblr_url, image['src'])
+        if not "impixu?" in image_url and not "quantserve" in image_url: 
+          print "Image: %(src)s" % image
 
-                filename = image["src"].split("/")[-1]
-                filename = filename[:75]
-                outpath = os.path.join(out_folder, filename)
-                urlretrieve(image_url, outpath)
+          filename = image["src"].split("/")[-1]
+          filename = filename[:75]
+          out = os.path.join(self.base_url, output_folder)
+          outpath = os.path.join(out, filename)
+          urlretrieve(image_url, outpath)
 
 
-def _usage():
-    print "python tumblrimgdl.py http://example.com [start page defaults 1] [end page defaults 2] [output directory relative to path]"
-
-if __name__ == "__main__":
-    url = sys.argv[1]
-    folder = sys.argv[2]
-    
-    start = 1
-    if sys.argv[3:]:
-        start = int(sys.argv[3])
-    
-    end = 2
-    if sys.argv[4:]:
-        end = int(sys.argv[4])
-
-    if not url.lower().startswith("http"):
-        if not url.lower().startswith("http"):
-            _usage()
-            sys.exit(-1)
-    main(url, folder, start, end)
+if __name__ == '__main__':
+  tumblrimgdl = Tumblrimgdl()
+  tumblrimgdl.dl_imgs()

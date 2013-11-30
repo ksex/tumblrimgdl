@@ -7,6 +7,7 @@ Required libraries
 ==========
 
 Beautifulsoup4
+argparse
 
 Usage
 ========
